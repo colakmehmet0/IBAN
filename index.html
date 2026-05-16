@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBAN Kopyala</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f7f6;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 22px;
+        }
+        p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        .iban-box {
+            background: #f8f9fa;
+            border: 1px dashed #ccc;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: bold;
+            color: #222;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        button:active {
+            background-color: #0056b3;
+        }
+        .success-msg {
+            color: #28a745;
+            font-weight: bold;
+            margin-top: 15px;
+            display: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- Adınızı buraya yazın -->
+    <h2>TEM ALTYAPI</h2> 
+    <p>Hesap Bilgileri</p>
+    
+    <!-- IBAN'ınızı buraya yazın (Boşluklu yazabilirsiniz, sistem otomatik temizler) -->
+    <div class="iban-box" id="ibanText">TR250006701000000021730558</div>
+    
+    <button onclick="copyIban()">IBAN'ı Kopyala</button>
+    <div class="success-msg" id="success">✓ IBAN Başarıyla Kopyalandı!</div>
+</div>
+
+<script>
+function copyIban() {
+    // Kutunun içindeki metni al ve boşlukları temizle (Banka uygulamaları boşluksuz ister)
+    var ibanRaw = document.getElementById("ibanText").innerText;
+    var ibanClean = ibanRaw.replace(/\s+/g, '');
+
+    // Modern kopyalama kodu (iOS ve Android uyumlu)
+    navigator.clipboard.writeText(ibanClean).then(function() {
+        var msg = document.getElementById("success");
+        msg.style.display = "block";
+        
+        // Mobil cihazda hafif bir titreşim geri bildirimi verir (Destekleyen cihazlarda)
+        if (navigator.vibrate) {
+            navigator.vibrate(100);
+        }
+
+        setTimeout(function() {
+            msg.style.display = "none";
+        }, 3000);
+    }).catch(function(err) {
+        alert("Kopyalanamadı, lütfen ekrandan seçerek kopyalayın.");
+    });
+}
+</script>
+
+</body>
+</html>
